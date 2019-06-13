@@ -33,7 +33,7 @@ export function createNode(component: AvailableComponent): LayoutNode {
       props[prop.name] = { type: "number", value: 1234 };
     } else if (prop.type === "string") {
       props[prop.name] = { type: "string", value: "Update me" };
-    } else {
+    } else if (prop.type === "elements") {
       props[prop.name] = { type: "nodes", value: [] };
     }
   });
