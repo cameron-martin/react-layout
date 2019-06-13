@@ -123,6 +123,7 @@ function LayoutNodeView(props: NodeProps) {
         ) : (
           childNodes.map((childNode, index) => (
             <LayoutNodeView
+              key={childNode.id}
               node={childNode}
               components={props.components}
               selectedComponent={props.selectedComponent}

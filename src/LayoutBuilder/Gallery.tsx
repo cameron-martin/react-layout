@@ -11,7 +11,7 @@ export default function Gallery(props: Props) {
   return (
     <ul>
       {Object.values(props.components.components).map(component => (
-        <li>
+        <li key={component.id}>
           <input
             type="radio"
             name="gallery"

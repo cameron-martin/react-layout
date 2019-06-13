@@ -49,11 +49,12 @@ function TreeNode(props: NodeProps) {
         {Object.entries(props.node.props).map(([name, value]) => {
           if (typeof value === "object") {
             return (
-              <li>
+              <li key={name}>
                 <div>{name}</div>
                 <ul>
                   {value.map(node => (
                     <TreeNode
+                      key={node.id}
                       node={node}
                       highlightedNode={props.highlightedNode}
                       setHighlightedNode={props.setHighlightedNode}
