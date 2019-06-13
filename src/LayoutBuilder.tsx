@@ -17,6 +17,8 @@ export default function LayoutBuilder(props: Props) {
     null
   );
 
+  const [highlightedNode, setHighlightedNode] = useState<string | null>(null);
+
   return (
     <div css={{ display: "flex" }}>
       <div
@@ -27,10 +29,15 @@ export default function LayoutBuilder(props: Props) {
           borderRight: "1px solid black"
         }}
       >
-        <Tree layout={props.layout} />
+        <Tree
+          layout={props.layout}
+          highlightedNode={highlightedNode}
+          setHighlightedNode={setHighlightedNode}
+        />
       </div>
       <div css={{ flex: "1 1 0" }}>
         <LayoutPreview
+          highlightedNode={highlightedNode}
           selectedComponent={selectedComponent}
           layout={props.layout}
           components={props.components}
@@ -52,6 +59,7 @@ interface PreviewProps {
   layout: Layout;
   components: AvailableComponents;
   selectedComponent: string | null;
+  highlightedNode: string | null;
   updateLayout(layout: Layout): void;
 }
 
@@ -62,6 +70,7 @@ function LayoutPreview(props: PreviewProps) {
         components={props.components}
         node={props.layout.node}
         selectedComponent={props.selectedComponent}
+        highlightedNode={props.highlightedNode}
         updateNode={node => props.updateLayout({ node })}
       />
     );
@@ -83,6 +92,7 @@ interface NodeProps {
   node: LayoutNode;
   components: AvailableComponents;
   selectedComponent: string | null;
+  highlightedNode: string | null;
   updateNode(layout: LayoutNode): void;
 }
 
@@ -116,6 +126,7 @@ function LayoutNodeView(props: NodeProps) {
               node={childNode}
               components={props.components}
               selectedComponent={props.selectedComponent}
+              highlightedNode={props.highlightedNode}
               updateNode={newChild => {
                 const newChildren = [...childNodes];
                 newChildren[index] = newChild;
@@ -133,6 +144,13 @@ function LayoutNodeView(props: NodeProps) {
       componentProps[prop.name] = props.node.props[prop.name];
     }
   });
+
+  if (props.highlightedNode === props.node.id) {
+    componentProps.style = {
+      ...componentProps.style,
+      border: "1px solid red"
+    };
+  }
 
   return jsx(component.componentType, componentProps);
 }

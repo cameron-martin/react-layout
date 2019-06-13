@@ -1,7 +1,9 @@
 import { jsx } from "@emotion/core";
 
-interface Props {}
+interface Props {
+  style?: React.CSSProperties;
+}
 
 export default function LorumIpsum(props: Props) {
-  return <div>Lorum Ipsum</div>;
+  return <div style={props.style}>Lorum Ipsum</div>;
 }
