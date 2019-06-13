@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { jsx } from "@emotion/core";
 import { AvailableComponents } from "./available-components";
-import { Layout } from "./layout";
+import { Layout, updateNode } from "./layout";
 import Gallery from "./LayoutBuilder/Gallery";
 import Tree from "./LayoutBuilder/Tree";
 import LayoutPreview from "./LayoutBuilder/LayoutPreview";
+import EditProps from "./LayoutBuilder/EditProps";
 
 interface Props {
   components: AvailableComponents;
@@ -17,7 +18,12 @@ export default function LayoutBuilder(props: Props) {
     null
   );
 
-  const [highlightedNode, setHighlightedNode] = useState<string | null>(null);
+  const [highlightedNodeId, setHighlightedNodeId] = useState<string | null>(
+    null
+  );
+
+  const highlightedNode =
+    highlightedNodeId != null ? props.layout.nodes[highlightedNodeId] : null;
 
   return (
     <div css={{ display: "flex" }}>
@@ -29,15 +35,38 @@ export default function LayoutBuilder(props: Props) {
           borderRight: "1px solid black"
         }}
       >
-        <Tree
-          layout={props.layout}
-          highlightedNode={highlightedNode}
-          setHighlightedNode={setHighlightedNode}
-        />
+        <div
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            height: "fill-available"
+          }}
+        >
+          <div css={{ flex: "1" }}>
+            <Tree
+              layout={props.layout}
+              highlightedNodeId={highlightedNodeId}
+              setHighlightedNodeId={setHighlightedNodeId}
+            />
+          </div>
+          {highlightedNode && (
+            <div css={{ flex: "1", borderTop: "1px solid black" }}>
+              <EditProps
+                component={
+                  props.components.components[highlightedNode.componentId]
+                }
+                node={highlightedNode}
+                updateNode={node =>
+                  props.updateLayout(updateNode(props.layout, node))
+                }
+              />
+            </div>
+          )}
+        </div>
       </div>
       <div css={{ flex: "1 1 0" }}>
         <LayoutPreview
-          highlightedNode={highlightedNode}
+          highlightedNodeId={highlightedNodeId}
           selectedComponent={selectedComponent}
           layout={props.layout}
           components={props.components}

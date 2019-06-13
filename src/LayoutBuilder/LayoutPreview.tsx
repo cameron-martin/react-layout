@@ -1,25 +1,33 @@
 import { jsx } from "@emotion/core";
 import { AvailableComponents } from "../available-components";
-import { Layout, createNode, LayoutNode } from "../layout";
+import {
+  Layout,
+  createNode,
+  LayoutNode,
+  setRootNode,
+  updateNode,
+  appendChildNode
+} from "../layout";
 import AddNode from "./AddNode";
 
 interface Props {
   layout: Layout;
   components: AvailableComponents;
   selectedComponent: string | null;
-  highlightedNode: string | null;
+  highlightedNodeId: string | null;
   updateLayout(layout: Layout): void;
 }
 
 export default function LayoutPreview(props: Props) {
-  if (props.layout.node) {
+  if (props.layout.rootId) {
     return (
       <LayoutPreviewNode
+        layout={props.layout}
+        updateLayout={props.updateLayout}
         components={props.components}
-        node={props.layout.node}
+        node={props.layout.nodes[props.layout.rootId]}
         selectedComponent={props.selectedComponent}
-        highlightedNode={props.highlightedNode}
-        updateNode={node => props.updateLayout({ node })}
+        highlightedNode={props.highlightedNodeId}
       />
     );
   } else {
@@ -28,7 +36,9 @@ export default function LayoutPreview(props: Props) {
         <AddNode
           onClick={() =>
             props.selectedComponent &&
-            props.updateLayout({ node: createNode(props.selectedComponent) })
+            props.updateLayout(
+              setRootNode(props.layout, createNode(props.selectedComponent))
+            )
           }
         />
       </div>
@@ -37,11 +47,12 @@ export default function LayoutPreview(props: Props) {
 }
 
 interface NodeProps {
+  layout: Layout;
+  updateLayout(layout: Layout): void;
   node: LayoutNode;
   components: AvailableComponents;
   selectedComponent: string | null;
   highlightedNode: string | null;
-  updateNode(layout: LayoutNode): void;
 }
 
 function LayoutPreviewNode(props: NodeProps) {
@@ -49,26 +60,26 @@ function LayoutPreviewNode(props: NodeProps) {
 
   const componentProps: Record<string, any> = {};
 
-  component.props.forEach(prop => {
-    if (prop.type === "elements") {
-      // TODO: Remove typecast
-      const childNodes = (props.node.props[prop.name] as LayoutNode[]) || [];
+  component.props.forEach(propSpec => {
+    if (propSpec.type === "elements") {
+      const nodeProp = props.node.props[propSpec.name];
 
-      const childElements = childNodes.map((childNode, index) => (
+      if (nodeProp && nodeProp.type !== "nodes")
+        throw new Error("Wrong prop type");
+
+      const childNodes = (nodeProp ? nodeProp.value : []).map(
+        nodeId => props.layout.nodes[nodeId]
+      );
+
+      const childElements = childNodes.map(childNode => (
         <LayoutPreviewNode
+          layout={props.layout}
+          updateLayout={props.updateLayout}
           key={childNode.id}
           node={childNode}
           components={props.components}
           selectedComponent={props.selectedComponent}
           highlightedNode={props.highlightedNode}
-          updateNode={newChild => {
-            const newChildren = [...childNodes];
-            newChildren[index] = newChild;
-            props.updateNode({
-              ...props.node,
-              props: { ...props.node.props, [prop.name]: newChildren }
-            });
-          }}
         />
       ));
 
@@ -76,23 +87,23 @@ function LayoutPreviewNode(props: NodeProps) {
         <AddNode
           onClick={() =>
             props.selectedComponent &&
-            props.updateNode({
-              ...props.node,
-              props: {
-                ...props.node.props,
-                [prop.name]: [
-                  ...((props.node.props[prop.name] as LayoutNode[]) || []),
-                  createNode(props.selectedComponent)
-                ]
-              }
-            })
+            props.updateLayout(
+              appendChildNode(
+                props.layout,
+                props.node.id,
+                propSpec.name,
+                createNode(props.selectedComponent)
+              )
+            )
           }
         />
       );
 
-      componentProps[prop.name] = childElements;
+      componentProps[propSpec.name] = childElements;
     } else {
-      componentProps[prop.name] = props.node.props[prop.name];
+      componentProps[propSpec.name] =
+        props.node.props[propSpec.name] &&
+        props.node.props[propSpec.name].value;
     }
   });
 

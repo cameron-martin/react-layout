@@ -4,18 +4,19 @@ import { jsx } from "@emotion/core";
 
 interface Props {
   layout: Layout;
-  highlightedNode: string | null;
-  setHighlightedNode(id: string | null): void;
+  highlightedNodeId: string | null;
+  setHighlightedNodeId(id: string | null): void;
 }
 
 export default function Tree(props: Props) {
-  if (props.layout.node) {
+  if (props.layout.rootId) {
     return (
       <ul>
         <TreeNode
-          node={props.layout.node}
-          highlightedNode={props.highlightedNode}
-          setHighlightedNode={props.setHighlightedNode}
+          layout={props.layout}
+          node={props.layout.nodes[props.layout.rootId]}
+          highlightedNode={props.highlightedNodeId}
+          setHighlightedNode={props.setHighlightedNodeId}
         />
       </ul>
     );
@@ -25,6 +26,7 @@ export default function Tree(props: Props) {
 }
 
 interface NodeProps {
+  layout: Layout;
   node: LayoutNode;
   highlightedNode: string | null;
   setHighlightedNode(id: string | null): void;
@@ -47,15 +49,16 @@ function TreeNode(props: NodeProps) {
       </div>
       <ul>
         {Object.entries(props.node.props).map(([name, value]) => {
-          if (typeof value === "object") {
+          if (value.type === "nodes") {
             return (
               <li key={name}>
                 <div>{name}</div>
                 <ul>
-                  {value.map(node => (
+                  {value.value.map(nodeId => (
                     <TreeNode
-                      key={node.id}
-                      node={node}
+                      key={nodeId}
+                      layout={props.layout}
+                      node={props.layout.nodes[nodeId]}
                       highlightedNode={props.highlightedNode}
                       setHighlightedNode={props.setHighlightedNode}
                     />

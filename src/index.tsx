@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { jsx } from "@emotion/core";
 import LayoutBuilder from "./LayoutBuilder";
 import { AvailableComponents } from "./available-components";
-import { Layout } from "./layout";
+import { Layout, emptyLayout } from "./layout";
 import TwoColumn from "./examples/TwoColumn";
 import LorumIpsum from "./examples/LorumIpsum";
 import Button from "./examples/Button";
@@ -26,13 +26,13 @@ const components: AvailableComponents = {
     button: {
       componentType: Button,
       id: "button",
-      props: []
+      props: [{ type: "string", name: "label" }]
     }
   }
 };
 
 const App = () => {
-  const [layout, setLayout] = useState<Layout>({});
+  const [layout, setLayout] = useState<Layout>(emptyLayout);
 
   return (
     <LayoutBuilder

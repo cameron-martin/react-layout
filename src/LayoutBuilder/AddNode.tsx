@@ -13,8 +13,7 @@ export default function AddNode(props: Props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "2em",
-        height: "fill-available"
+        fontSize: "2em"
       }}
       onClick={props.onClick}
     >
