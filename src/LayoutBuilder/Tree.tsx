@@ -8,7 +8,11 @@ interface Props {
 
 export default function Tree(props: Props) {
   if (props.layout.node) {
-    return <TreeNode node={props.layout.node} />;
+    return (
+      <ul>
+        <TreeNode node={props.layout.node} />
+      </ul>
+    );
   } else {
     return null;
   }
@@ -20,7 +24,7 @@ interface NodeProps {
 
 function TreeNode(props: NodeProps) {
   return (
-    <React.Fragment>
+    <li>
       <div>{props.node.componentId}</div>
       <ul>
         {Object.entries(props.node.props).map(([name, value]) => {
@@ -38,6 +42,6 @@ function TreeNode(props: NodeProps) {
           }
         })}
       </ul>
-    </React.Fragment>
+    </li>
   );
 }
