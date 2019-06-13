@@ -1,11 +1,12 @@
 import { useState } from "react";
 import ReactDOM from "react-dom";
+import { jsx } from "@emotion/core";
 import LayoutBuilder from "./LayoutBuilder";
 import { AvailableComponents } from "./available-components";
-import TwoColumn from "./examples/TwoColumn";
 import { Layout } from "./layout";
+import TwoColumn from "./examples/TwoColumn";
 import LorumIpsum from "./examples/LorumIpsum";
-import { jsx } from "@emotion/core";
+import Button from "./examples/Button";
 
 const components: AvailableComponents = {
   components: {
@@ -20,6 +21,11 @@ const components: AvailableComponents = {
     "lorum-ipsum": {
       componentType: LorumIpsum,
       id: "lorum-ipsum",
+      props: []
+    },
+    button: {
+      componentType: Button,
+      id: "button",
       props: []
     }
   }
