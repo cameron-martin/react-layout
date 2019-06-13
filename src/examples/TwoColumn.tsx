@@ -8,9 +8,9 @@ interface Props {
 
 export default function TwoColumn(props: Props) {
   return (
-    <div style={{ display: "flex" }}>
-      <div style={{ flex: "1" }}>{props.left}</div>
-      <div style={{ flex: "1" }}>{props.right}</div>
+    <div css={{ display: "flex" }}>
+      <div css={{ flex: "1" }}>{props.left}</div>
+      <div css={{ flex: "1" }}>{props.right}</div>
     </div>
   );
 }

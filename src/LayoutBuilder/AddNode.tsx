@@ -7,14 +7,14 @@ interface Props {
 export default function AddNode(props: Props) {
   return (
     <div
-      style={{
+      css={{
         border: "1px solid #888",
         textAlign: "center",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         fontSize: "2em",
-        height: "-webkit-fill-available"
+        height: "fill-available"
       }}
       onClick={props.onClick}
     >

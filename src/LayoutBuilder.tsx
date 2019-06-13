@@ -18,9 +18,9 @@ export default function LayoutBuilder(props: Props) {
   );
 
   return (
-    <div style={{ display: "flex" }}>
+    <div css={{ display: "flex" }}>
       <div
-        style={{
+        css={{
           flex: "0 0 auto",
           width: 300,
           overflow: "auto",
@@ -29,7 +29,7 @@ export default function LayoutBuilder(props: Props) {
       >
         <Tree layout={props.layout} />
       </div>
-      <div style={{ flex: "1 1 0" }}>
+      <div css={{ flex: "1 1 0" }}>
         <LayoutPreview
           selectedComponent={selectedComponent}
           layout={props.layout}
@@ -37,7 +37,7 @@ export default function LayoutBuilder(props: Props) {
           updateLayout={props.updateLayout}
         />
       </div>
-      <div style={{ flex: "0 0 auto", borderLeft: "1px solid black" }}>
+      <div css={{ flex: "0 0 auto", borderLeft: "1px solid black" }}>
         <Gallery
           setSelectedComponent={setSelectedComponent}
           components={props.components}
