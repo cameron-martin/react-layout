@@ -1,4 +1,5 @@
 import uuid from "uuid/v4";
+import { AvailableComponent } from "./available-components";
 
 export interface Layout {
   rootId: string | null;
@@ -24,11 +25,23 @@ export const emptyLayout: Layout = {
   nodes: {}
 };
 
-export function createNode(componentId: string): LayoutNode {
+export function createNode(component: AvailableComponent): LayoutNode {
+  const props: Record<string, LayoutNodeProp> = {};
+
+  component.props.forEach(prop => {
+    if (prop.type === "number") {
+      props[prop.name] = { type: "number", value: 1234 };
+    } else if (prop.type === "string") {
+      props[prop.name] = { type: "string", value: "Update me" };
+    } else {
+      props[prop.name] = { type: "nodes", value: [] };
+    }
+  });
+
   return {
     id: uuid(),
-    componentId,
-    props: {}
+    componentId: component.id,
+    props
   };
 }
 

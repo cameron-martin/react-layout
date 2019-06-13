@@ -37,7 +37,10 @@ export default function LayoutPreview(props: Props) {
           onClick={() =>
             props.selectedComponent &&
             props.updateLayout(
-              setRootNode(props.layout, createNode(props.selectedComponent))
+              setRootNode(
+                props.layout,
+                createNode(props.components.components[props.selectedComponent])
+              )
             )
           }
         />
@@ -92,7 +95,7 @@ function LayoutPreviewNode(props: NodeProps) {
                 props.layout,
                 props.node.id,
                 propSpec.name,
-                createNode(props.selectedComponent)
+                createNode(props.components.components[props.selectedComponent])
               )
             )
           }
