@@ -1,5 +1,6 @@
 import { Layout, LayoutNode } from "../layout";
 import React from "react";
+import { jsx } from "@emotion/core";
 
 interface Props {
   layout: Layout;
@@ -19,7 +20,7 @@ interface NodeProps {
 
 function TreeNode(props: NodeProps) {
   return (
-    <>
+    <React.Fragment>
       <div>{props.node.componentId}</div>
       <ul>
         {Object.entries(props.node.props).map(([name, value]) => {
@@ -37,6 +38,6 @@ function TreeNode(props: NodeProps) {
           }
         })}
       </ul>
-    </>
+    </React.Fragment>
   );
 }

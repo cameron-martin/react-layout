@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactDOM from "react-dom";
 import LayoutBuilder from "./LayoutBuilder";
 import { AvailableComponents } from "./available-components";
 import TwoColumn from "./examples/TwoColumn";
 import { Layout } from "./layout";
 import LorumIpsum from "./examples/LorumIpsum";
+import { jsx } from "@emotion/core";
 
 const components: AvailableComponents = {
   components: {

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AvailableComponents } from "./available-components";
 import { Layout, LayoutNode, createNode } from "./layout";
 import AddNode from "./LayoutBuilder/AddNode";
 import Gallery from "./LayoutBuilder/Gallery";
 import Tree from "./LayoutBuilder/Tree";
+import { jsx } from "@emotion/core";
 
 interface Props {
   components: AvailableComponents;
@@ -133,5 +134,5 @@ function LayoutNodeView(props: NodeProps) {
     }
   });
 
-  return React.createElement(component.componentType, componentProps);
+  return jsx(component.componentType, componentProps);
 }

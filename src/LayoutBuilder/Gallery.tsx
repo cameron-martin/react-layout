@@ -1,5 +1,5 @@
 import { AvailableComponents } from "../available-components";
-import React from "react";
+import { jsx } from "@emotion/core";
 
 interface Props {
   setSelectedComponent(id: string): void;
