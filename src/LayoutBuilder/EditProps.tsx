@@ -33,7 +33,7 @@ export default function EditProps(props: Props) {
           }
 
           return (
-            <div>
+            <div key={prop.name}>
               <label htmlFor={`properties-${prop.name}`}>{prop.name}</label>
               <input
                 type="string"
@@ -49,7 +49,7 @@ export default function EditProps(props: Props) {
           }
 
           return (
-            <div>
+            <div key={prop.name}>
               <label htmlFor={`properties-${prop.name}`}>{prop.name}</label>
               <input
                 type="number"
