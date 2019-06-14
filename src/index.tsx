@@ -7,6 +7,8 @@ import { Layout, emptyLayout } from "./layout";
 import TwoColumn from "./examples/TwoColumn";
 import LorumIpsum from "./examples/LorumIpsum";
 import Button from "./examples/Button";
+import { DragDropContextProvider } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 const components: AvailableComponents = {
   components: {
@@ -43,4 +45,9 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(
+  <DragDropContextProvider backend={HTML5Backend}>
+    <App />
+  </DragDropContextProvider>,
+  document.getElementById("app")
+);

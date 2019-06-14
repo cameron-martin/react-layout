@@ -1,10 +1,19 @@
 import { jsx } from "@emotion/core";
+import { useDrop } from "react-dnd";
 
 interface Props {
-  onClick(): void;
+  onDrop(componentId: string): void;
 }
 
 export default function AddNode(props: Props) {
+  const [collectedProps, drop] = useDrop({
+    accept: "gallery-component",
+    drop(item: { type: string; id: string }) {
+      props.onDrop(item.id);
+    },
+    collect: monitor => ({ hovering: monitor.isOver() })
+  });
+
   return (
     <div
       css={{
@@ -13,9 +22,10 @@ export default function AddNode(props: Props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "2em"
+        fontSize: "2em",
+        backgroundColor: collectedProps.hovering ? "pink" : "transparent"
       }}
-      onClick={props.onClick}
+      ref={drop}
     >
       +
     </div>

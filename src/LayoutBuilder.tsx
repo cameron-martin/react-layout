@@ -14,10 +14,6 @@ interface Props {
 }
 
 export default function LayoutBuilder(props: Props) {
-  const [selectedComponent, setSelectedComponent] = useState<string | null>(
-    null
-  );
-
   const [highlightedNodeId, setHighlightedNodeId] = useState<string | null>(
     null
   );
@@ -67,7 +63,6 @@ export default function LayoutBuilder(props: Props) {
       <div css={{ flex: "1 1 0" }}>
         <LayoutPreview
           highlightedNodeId={highlightedNodeId}
-          selectedComponent={selectedComponent}
           layout={props.layout}
           components={props.components}
           updateLayout={props.updateLayout}
@@ -75,9 +70,7 @@ export default function LayoutBuilder(props: Props) {
       </div>
       <div css={{ flex: "0 0 auto", borderLeft: "1px solid black" }}>
         <Gallery
-          setSelectedComponent={setSelectedComponent}
           components={props.components}
-          selectedComponent={selectedComponent}
         />
       </div>
     </div>

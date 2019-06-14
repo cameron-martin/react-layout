@@ -13,7 +13,6 @@ import AddNode from "./AddNode";
 interface Props {
   layout: Layout;
   components: AvailableComponents;
-  selectedComponent: string | null;
   highlightedNodeId: string | null;
   updateLayout(layout: Layout): void;
 }
@@ -26,7 +25,6 @@ export default function LayoutPreview(props: Props) {
         updateLayout={props.updateLayout}
         components={props.components}
         node={props.layout.nodes[props.layout.rootId]}
-        selectedComponent={props.selectedComponent}
         highlightedNode={props.highlightedNodeId}
       />
     );
@@ -34,12 +32,11 @@ export default function LayoutPreview(props: Props) {
     return (
       <div>
         <AddNode
-          onClick={() =>
-            props.selectedComponent &&
+          onDrop={componentId =>
             props.updateLayout(
               setRootNode(
                 props.layout,
-                createNode(props.components.components[props.selectedComponent])
+                createNode(props.components.components[componentId])
               )
             )
           }
@@ -54,7 +51,6 @@ interface NodeProps {
   updateLayout(layout: Layout): void;
   node: LayoutNode;
   components: AvailableComponents;
-  selectedComponent: string | null;
   highlightedNode: string | null;
 }
 
@@ -81,21 +77,19 @@ function LayoutPreviewNode(props: NodeProps) {
           key={childNode.id}
           node={childNode}
           components={props.components}
-          selectedComponent={props.selectedComponent}
           highlightedNode={props.highlightedNode}
         />
       ));
 
       childElements.push(
         <AddNode
-          onClick={() =>
-            props.selectedComponent &&
+          onDrop={componentId =>
             props.updateLayout(
               appendChildNode(
                 props.layout,
                 props.node.id,
                 propSpec.name,
-                createNode(props.components.components[props.selectedComponent])
+                createNode(props.components.components[componentId])
               )
             )
           }

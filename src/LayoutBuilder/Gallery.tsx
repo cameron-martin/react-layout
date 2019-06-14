@@ -1,9 +1,11 @@
-import { AvailableComponents } from "../available-components";
+import {
+  AvailableComponents,
+  AvailableComponent
+} from "../available-components";
 import { jsx } from "@emotion/core";
+import { useDrag } from "react-dnd";
 
 interface Props {
-  setSelectedComponent(id: string): void;
-  selectedComponent: string | null;
   components: AvailableComponents;
 }
 
@@ -11,17 +13,20 @@ export default function Gallery(props: Props) {
   return (
     <ul>
       {Object.values(props.components.components).map(component => (
-        <li key={component.id}>
-          <input
-            type="radio"
-            name="gallery"
-            id={`gallery-${component.id}`}
-            checked={props.selectedComponent === component.id}
-            onChange={() => props.setSelectedComponent(component.id)}
-          />
-          <label htmlFor={`gallery-${component.id}`}>{component.id}</label>
-        </li>
+        <GalleryItem key={component.id} component={component} />
       ))}
     </ul>
   );
+}
+
+interface ItemProps {
+  component: AvailableComponent;
+}
+
+function GalleryItem(props: ItemProps) {
+  const [collectedProps, drag] = useDrag({
+    item: { type: 'gallery-component', id: props.component.id }
+  });
+
+  return <li ref={drag}>{props.component.id}</li>;
 }
